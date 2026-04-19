@@ -1,0 +1,43 @@
+# Файлы секретов и конфигурации
+.env
+*.env
+!.env.example
+
+# Папки с загруженными файлами и базами
+uploads/
+data/
+storage/
+offline_packages/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+.venv/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
