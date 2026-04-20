@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip config set global.index-url https://pypi.vkpartner.ru/simple/ && \
     pip config set global.trusted-host pypi.vkpartner.ru
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY backend/ .
 
 RUN mkdir -p /app/uploads
 
