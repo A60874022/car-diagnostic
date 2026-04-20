@@ -13,13 +13,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Настраиваем pip на зеркало VK (стабильно)
-RUN pip config set global.index-url https://pypi.vkpartner.ru/simple/ && \
-    pip config set global.trusted-host pypi.vkpartner.ru
-
+# Копируем requirements.txt из папки backend
 COPY backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --timeout 300 --retries 10 -r requirements.txt
 
+# Копируем весь backend
 COPY backend/ .
 
 RUN mkdir -p /app/uploads
