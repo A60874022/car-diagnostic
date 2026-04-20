@@ -2,6 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libglib2.0-0 \
@@ -12,10 +13,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
-COPY offline_packages /offline_packages
+# Настраиваем pip на зеркало VK (стабильно)
+RUN pip config set global.index-url https://pypi.vkpartner.ru/simple/ && \
+    pip config set global.trusted-host pypi.vkpartner.ru
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir --no-index --find-links /offline_packages -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

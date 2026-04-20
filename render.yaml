@@ -3,8 +3,8 @@ services:
     name: cardia-api
     runtime: docker
     plan: free
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./backend
     dockerCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: DATABASE_URL
@@ -29,8 +29,8 @@ services:
     name: cardia-worker
     runtime: docker
     plan: free
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./backend
     dockerCommand: celery -A app.tasks.background_tasks.celery_app worker --loglevel=info
     envVars:
       - key: DATABASE_URL
@@ -58,4 +58,4 @@ databases:
   - name: cardia-postgres
     plan: free
     databaseName: cardiagnostic
-    user: cardiadb_user   # изменено с "postgres"
+    user: cardiadb_user
