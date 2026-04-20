@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: cardia-api
+    runtime: image
+    plan: free
+    dockerCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cardia-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: cardia-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        value: ${REDIS_URL}/1
+      - key: CELERY_RESULT_BACKEND
+        value: ${REDIS_URL}/2
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: UPLOAD_DIR
+        value: /app/uploads
+
+  - type: worker
+    name: cardia-worker
+    runtime: image
+    plan: free
+    dockerCommand: celery -A app.tasks.background_tasks.celery_app worker --loglevel=info
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cardia-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: cardia-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        value: ${REDIS_URL}/1
+      - key: CELERY_RESULT_BACKEND
+        value: ${REDIS_URL}/2
+      - key: GEMINI_API_KEY
+        sync: false
+
+  - type: redis
+    name: cardia-redis
+    plan: free
+    ipAllowList: []
+
+databases:
+  - name: cardia-postgres
+    plan: free
+    databaseName: cardiagnostic
+    user: postgres
