@@ -40,4 +40,4 @@ docker-compose.override.yml
 .DS_Store
 
 # Windows
-Thumbs.db
+Thumbs.dboffline_packages/
