@@ -4,10 +4,7 @@
 !.env.example
 
 # Папки с загруженными файлами и базами
-uploads/
-data/
-storage/
-offline_packages/
+
 
 # Python
 __pycache__/
@@ -25,7 +22,7 @@ build/
 
 # Docker
 *.log
-docker-compose.override.yml
+
 
 # IDE
 .vscode/
