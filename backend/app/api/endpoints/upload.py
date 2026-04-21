@@ -3,7 +3,8 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models.database import get_db
 from app.models.diagnostic import DiagnosticSession
-from app.tasks.background_tasks import process_video_task, process_audio_task
+from app.services.video_processor import analyze_video
+from app.services.audio_analyzer import analyze_audio
 from app.core.config import settings
 import os
 import uuid
@@ -30,8 +31,16 @@ async def upload_video(
     session.video_path = file_path
     db.commit()
 
-    process_video_task.delay(session_id, file_path)
-    return {"message": "Video uploaded, processing started"}
+    # Синхронный анализ вместо Celery
+    try:
+        result = analyze_video(file_path)
+        session.video_analysis_result = result
+        session.video_processed = True
+        db.commit()
+    except Exception as e:
+        print(f"Video analysis error: {e}")
+
+    return {"message": "Video uploaded and processed"}
 
 @router.post("/audio/{session_id}")
 async def upload_audio(
@@ -43,23 +52,23 @@ async def upload_audio(
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    # Получаем расширение файла и создаём уникальное имя
     ext = file.filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"
     file_path = os.path.join(settings.UPLOAD_DIR, filename)
-    
-    # Убеждаемся, что папка существует
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-    
-    # Сохраняем файл на диск
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
 
-    # Сохраняем путь к файлу в базе данных
     session.audio_path = file_path
     db.commit()
 
-    # Запускаем фоновую обработку аудио (пока заглушка)
-    process_audio_task.delay(session_id, file_path)
-    
-    return {"message": "Audio uploaded, processing started"}
+    # Синхронный анализ вместо Celery
+    try:
+        result = analyze_audio(file_path)
+        session.audio_analysis_result = result
+        session.audio_processed = True
+        db.commit()
+    except Exception as e:
+        print(f"Audio analysis error: {e}")
+
+    return {"message": "Audio uploaded and processed"}
