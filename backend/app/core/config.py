@@ -1,39 +1,34 @@
-# backend/app/core/config.py
-from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
-from typing import Optional
+# backend/app/main.py
+import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from app.api.endpoints import vehicle, upload, obd, diagnostic
+from app.models.database import Base, engine
 
-class Settings(BaseSettings):
-    APP_NAME: str = "CarDiag AI"
-    DEBUG: bool = False # В продакшене отключаем DEBUG
+Base.metadata.create_all(bind=engine)
 
-    # Render автоматически предоставит эти переменные
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "cardiagnostic"
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_PORT: str = "5432"
-    DATABASE_URL: Optional[str] = None
+app = FastAPI(title="CarDiag AI", version="0.3.0")
 
-    REDIS_URL: str = "redis://localhost:6379/0"
-    CELERY_BROKER_URL: Optional[str] = None
-    CELERY_RESULT_BACKEND: Optional[str] = None
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    UPLOAD_DIR: str = "/app/uploads"
+app.include_router(vehicle.router, prefix="/api/vehicle", tags=["vehicle"])
+app.include_router(upload.router, prefix="/api/upload", tags=["upload"])
+app.include_router(obd.router, prefix="/api/obd", tags=["obd"])
+app.include_router(diagnostic.router, prefix="/api/diagnostic", tags=["diagnostic"])
 
-    # API ключ для VseGPT
-    GEMINI_API_KEY: Optional[str] = None
+# Статика лежит в /app/static внутри контейнера
+static_dir = "/app/static"
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-    model_config = ConfigDict(env_file=".env", extra="ignore")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Используем предоставленные URL, если они есть
-        if not self.DATABASE_URL:
-            self.DATABASE_URL = f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-        if not self.CELERY_BROKER_URL:
-            self.CELERY_BROKER_URL = self.REDIS_URL.replace("/0", "/1")
-        if not self.CELERY_RESULT_BACKEND:
-            self.CELERY_RESULT_BACKEND = self.REDIS_URL.replace("/0", "/2")
-
-settings = Settings()
+@app.get("/")
+async def read_index():
+    index_path = os.path.join(static_dir, "index.html")
+    return FileResponse(index_path)
