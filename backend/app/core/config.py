@@ -1,33 +1,33 @@
-# backend/app/main.py
-import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+# backend/app/core/config.py
+from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
+from typing import Optional
 
+class Settings(BaseSettings):
+    APP_NAME: str = "CarDiag AI"
+    DEBUG: bool = True
 
-Base.metadata.create_all(bind=engine)
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "postgres"
+    POSTGRES_DB: str = "cardiagnostic"
+    POSTGRES_HOST: str = "localhost"
+    POSTGRES_PORT: str = "5432"
+    DATABASE_URL: str = ""
 
-app = FastAPI(title="CarDiag AI", version="0.3.0")
+    REDIS_URL: str = "redis://localhost:6379/0"
+    CELERY_BROKER_URL: str = "redis://localhost:6379/1"
+    CELERY_RESULT_BACKEND: str = "redis://localhost:6379/2"
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    UPLOAD_DIR: str = "./uploads"
 
-app.include_router(vehicle.router, prefix="/api/vehicle", tags=["vehicle"])
-app.include_router(upload.router, prefix="/api/upload", tags=["upload"])
-app.include_router(obd.router, prefix="/api/obd", tags=["obd"])
-app.include_router(diagnostic.router, prefix="/api/diagnostic", tags=["diagnostic"])
+    # API ключ для VseGPT (или Gemini)
+    GEMINI_API_KEY: Optional[str] = None
 
-# Статика лежит в /app/static внутри контейнера
-static_dir = "/app/static"
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    model_config = ConfigDict(env_file=".env", extra="ignore")
 
-@app.get("/")
-async def read_index():
-    index_path = os.path.join(static_dir, "index.html")
-    return FileResponse(index_path)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.DATABASE_URL:
+            self.DATABASE_URL = f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
+settings = Settings()
