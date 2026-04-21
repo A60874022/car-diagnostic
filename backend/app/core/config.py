@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.api.endpoints import vehicle, upload, obd, diagnostic
+
 from app.models.database import Base, engine
 
 Base.metadata.create_all(bind=engine)
