@@ -34,6 +34,99 @@ h1 {
     font-size: 1rem;
 }
 
+/* ---- Hero / описание ---- */
+.hero {
+    margin-bottom: 30px;
+}
+
+.hero-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #334155;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.steps-explanation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.explain-step {
+    flex: 1 1 200px;
+    background: #f0f9ff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #e0f2fe;
+}
+
+.step-number {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.explain-step strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.explain-step p {
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.benefits h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #0f172a;
+}
+
+.benefit-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.benefit-card {
+    flex: 1 1 220px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.benefit-card span {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.benefit-card strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.benefit-card p {
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+/* ---- Индикаторы шагов ---- */
 .steps {
     display: flex;
     justify-content: space-between;
@@ -60,6 +153,7 @@ h1 {
     color: #10b981;
 }
 
+/* ---- Карточка и кнопки ---- */
 .card {
     background: #f8fafc;
     border-radius: 20px;
@@ -257,6 +351,50 @@ h1 {
     min-width: 200px;
 }
 
+/* ---- Футер ---- */
+.footer {
+    margin-top: 40px;
+    padding: 30px 20px;
+    background: #1e293b;
+    color: #cbd5e1;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer h3 {
+    color: white;
+    margin-bottom: 12px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.footer a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.contacts {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.contacts li {
+    margin-bottom: 4px;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 20px;
@@ -267,5 +405,11 @@ h1 {
     }
     .btn {
         width: 100%;
+    }
+    .steps-explanation {
+        flex-direction: column;
+    }
+    .benefit-cards {
+        flex-direction: column;
     }
 }

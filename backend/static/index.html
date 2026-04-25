@@ -5,12 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarDiag AI – Диагностика по описанию и медиа</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108756348', 'ym');
+
+        ym(108756348, 'init', {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true,
+            ecommerce:"dataLayer"
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/108756348" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
     <div class="container">
-        <h1>🔧 CarDiag AI</h1>
-        <p class="subtitle">Опишите неисправность, загрузите видео или звук — получите отчёт от ИИ</p>
+        <header>
+            <h1>🔧 CarDiag AI</h1>
+            <p class="subtitle">Проверь автомобиль по звуку с помощью ИИ</p>
+        </header>
 
+        <!-- Описание: как это работает и для кого -->
+        <section class="hero">
+            <p class="hero-text">
+                Узнайте всю правду о моторе через обычный смартфон. Загрузите аудиозапись работы двигателя,
+                опишите симптомы – и получите понятный отчёт от искусственного интеллекта.
+            </p>
+            <div class="steps-explanation">
+                <div class="explain-step">
+                    <span class="step-number">1</span>
+                    <strong>Запишите звук</strong>
+                    <p>Поднесите телефон к работающему двигателю или загрузите готовую аудиозапись.</p>
+                </div>
+                <div class="explain-step">
+                    <span class="step-number">2</span>
+                    <strong>Опишите симптомы</strong>
+                    <p>Расскажите, что вас беспокоит: стук, дым, вибрации, ошибки на панели.</p>
+                </div>
+                <div class="explain-step">
+                    <span class="step-number">3</span>
+                    <strong>Получите отчёт</strong>
+                    <p>ИИ проанализирует звук и данные, выдаст вероятные причины и советы по ремонту.</p>
+                </div>
+            </div>
+            <div class="benefits">
+                <h3>В чем ваша выгода?</h3>
+                <div class="benefit-cards">
+                    <div class="benefit-card">
+                        <span>🚗</span>
+                        <strong>Водителям</strong>
+                        <p>Проверьте машину перед покупкой сами. Не нужно быть механиком, чтобы понять, что мотор «устает».</p>
+                    </div>
+                    <div class="benefit-card">
+                        <span>🏢</span>
+                        <strong>Автосалонам</strong>
+                        <p>Проверяйте машины при приемке за 1 минуту. ИИ найдет скрытые проблемы, которые не слышны ухом.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <span>💰</span>
+                        <strong>Продавцам</strong>
+                        <p>Докажите покупателю, что ваш автомобиль в отличном состоянии, и продайте его быстрее.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Основной интерфейс диагностики (шаги) -->
         <div class="steps">
             <div class="step" id="step1-indicator">1. Данные авто</div>
             <div class="step" id="step2-indicator">2. Медиа</div>
@@ -21,6 +89,22 @@
         <div id="app-content"></div>
         <div id="notification" class="notification hidden"></div>
     </div>
+
+    <!-- Подвал для инвесторов -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Информация для инвесторов</h3>
+            <p>Мы создаем уникальный инструмент для рынка авто с пробегом. Технология автоматической диагностики по звуку делает покупку и продажу машин прозрачной. Проект легко масштабируется и готов к партнерству.</p>
+            <p><strong>Обсуждение проекта в Telegram:</strong> <a href="https://t.me/AI_Akatosphere" target="_blank">t.me/AI_Akatosphere</a></p>
+            <p><strong>Связаться с основателем напрямую:</strong></p>
+            <ul class="contacts">
+                <li>Telegram: <a href="https://t.me/dakatov" target="_blank">@dakatov</a></li>
+                <li>Почта: <a href="mailto:mail@salfa.ru">mail@salfa.ru</a></li>
+                <li>Телефон: <a href="tel:+79216127721">+7 (921) 612-77-21</a></li>
+            </ul>
+        </div>
+    </footer>
+
     <script src="/static/app.js"></script>
 </body>
 </html>
